@@ -20,6 +20,7 @@ import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
+import com.google.firebase.auth.IdTokenResult;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import io.capawesome.capacitorjs.plugins.firebase.authentication.FirebaseAuthenticationHelper.ProviderId;
@@ -177,8 +178,28 @@ public class FirebaseAuthentication {
         tokenResultTask.addOnCompleteListener(
             task -> {
                 if (task.isSuccessful()) {
-                    String token = task.getResult().getToken();
-                    GetIdTokenResult result = new GetIdTokenResult(token);
+                    String token = task.getResult().token
+                    callback.success(token);
+                } else {
+                    Exception exception = task.getException();
+                    callback.error(exception);
+                }
+            }
+        );
+    }
+
+        public void getIdTokenResult(Boolean forceRefresh, @NonNull final NonEmptyResultCallback callback) {
+        FirebaseUser user = getCurrentUser();
+        if (user == null) {
+            callback.error(new Exception(ERROR_NO_USER_SIGNED_IN));
+            return;
+        }
+        Task<GetTokenResult> tokenResultTask = user.getIdTokenResult(forceRefresh);
+        tokenResultTask.addOnCompleteListener(
+            task -> {
+                if (task.isSuccessful()) {
+                    IdTokenResult taskResult = task.getResult();
+                    GetIdTokenResult result = new GetIdTokenResult(taskResult);
                     callback.success(result);
                 } else {
                     Exception exception = task.getException();
