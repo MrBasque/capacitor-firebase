@@ -201,14 +201,30 @@ export class FirebaseAuthenticationWeb
 
   public async getIdToken(
     options?: GetIdTokenOptions,
-  ): Promise<GetIdTokenResult> {
+  ): Promise<string> {
     const auth = getAuth();
     if (!auth.currentUser) {
       throw new Error(FirebaseAuthenticationWeb.ERROR_NO_USER_SIGNED_IN);
     }
     const idToken = await auth.currentUser.getIdToken(options?.forceRefresh);
+    return idToken || '';
+  }
+  public async getIdTokenResult(
+    options?: GetIdTokenOptions,
+  ): Promise<GetIdTokenResult> {
+    const auth = getAuth();
+    if (!auth.currentUser) {
+      throw new Error(FirebaseAuthenticationWeb.ERROR_NO_USER_SIGNED_IN);
+    }
+    const idTokenResult = await auth.currentUser.getIdTokenResult(options?.forceRefresh);
     const result: GetIdTokenResult = {
-      token: idToken || '',
+      token:  idTokenResult.token,
+      claims: idTokenResult.claims,
+      authTime: idTokenResult.authTime,
+      issuedAtTime: idTokenResult.issuedAtTime,
+      expirationTime: idTokenResult.expirationTime,
+      signInProvider: idTokenResult.signInProvider,
+      signInSecondFactor: idTokenResult.signInSecondFactor
     };
     return result;
   }

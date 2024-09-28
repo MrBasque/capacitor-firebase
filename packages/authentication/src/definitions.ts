@@ -105,7 +105,13 @@ export interface FirebaseAuthenticationPlugin {
    *
    * @since 0.1.0
    */
-  getIdToken(options?: GetIdTokenOptions): Promise<GetIdTokenResult>;
+  getIdToken(options?: GetIdTokenOptions): Promise<string>;
+    /**
+   * Fetches the Firebase Auth ID Token for the currently signed-in user.
+   *
+   * @since 6.1.0
+   */
+  getIdTokenResult(options?: GetIdTokenOptions): Promise<GetIdTokenResult>;
   /**
    * Returns the `SignInResult` from the redirect-based sign-in flow.
    *
@@ -646,6 +652,14 @@ export interface GetIdTokenResult {
    * @since 0.1.0
    */
   token: string;
+  expirationTime: string;
+  authTime: string;
+  issuedAtTime: string;
+  signInProvider: string | null;
+  signInSecondFactor: string | null;
+  claims: {
+    [key: string]: any;
+  };
 }
 
 /**
