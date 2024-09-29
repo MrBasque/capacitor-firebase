@@ -415,6 +415,7 @@ const useEmulator = async () => {
 * [`getCurrentUser()`](#getcurrentuser)
 * [`getPendingAuthResult()`](#getpendingauthresult)
 * [`getIdToken(...)`](#getidtoken)
+* [`getIdTokenResult(...)`](#getidtokenresult)
 * [`getRedirectResult()`](#getredirectresult)
 * [`getTenantId()`](#gettenantid)
 * [`isSignInWithEmailLink(...)`](#issigninwithemaillink)
@@ -615,7 +616,26 @@ Only available for Android.
 ### getIdToken(...)
 
 ```typescript
-getIdToken(options?: GetIdTokenOptions | undefined) => Promise<GetIdTokenResult>
+getIdToken(options?: GetIdTokenOptions | undefined) => Promise<string>
+```
+
+Fetches the Firebase Auth ID Token for the currently signed-in user.
+
+| Param         | Type                                                            |
+| ------------- | --------------------------------------------------------------- |
+| **`options`** | <code><a href="#getidtokenoptions">GetIdTokenOptions</a></code> |
+
+**Returns:** <code>Promise&lt;string&gt;</code>
+
+**Since:** 0.1.0
+
+--------------------
+
+
+### getIdTokenResult(...)
+
+```typescript
+getIdTokenResult(options?: GetIdTokenOptions | undefined) => Promise<GetIdTokenResult>
 ```
 
 Fetches the Firebase Auth ID Token for the currently signed-in user.
@@ -626,7 +646,7 @@ Fetches the Firebase Auth ID Token for the currently signed-in user.
 
 **Returns:** <code>Promise&lt;<a href="#getidtokenresult">GetIdTokenResult</a>&gt;</code>
 
-**Since:** 0.1.0
+**Since:** 6.1.0
 
 --------------------
 
@@ -1743,18 +1763,24 @@ Remove all listeners for this plugin.
 | **`user`** | <code><a href="#user">User</a> \| null</code> | The currently signed-in user, or null if there isn't any. | 0.1.0 |
 
 
-#### GetIdTokenResult
-
-| Prop        | Type                | Description                            | Since |
-| ----------- | ------------------- | -------------------------------------- | ----- |
-| **`token`** | <code>string</code> | The Firebase Auth ID token JWT string. | 0.1.0 |
-
-
 #### GetIdTokenOptions
 
 | Prop               | Type                 | Description                                   | Since |
 | ------------------ | -------------------- | --------------------------------------------- | ----- |
 | **`forceRefresh`** | <code>boolean</code> | Force refresh regardless of token expiration. | 0.1.0 |
+
+
+#### GetIdTokenResult
+
+| Prop                     | Type                                 | Description                            | Since |
+| ------------------------ | ------------------------------------ | -------------------------------------- | ----- |
+| **`token`**              | <code>string</code>                  | The Firebase Auth ID token JWT string. | 0.1.0 |
+| **`expirationTime`**     | <code>string</code>                  |                                        |       |
+| **`authTime`**           | <code>string</code>                  |                                        |       |
+| **`issuedAtTime`**       | <code>string</code>                  |                                        |       |
+| **`signInProvider`**     | <code>string \| null</code>          |                                        |       |
+| **`signInSecondFactor`** | <code>string \| null</code>          |                                        |       |
+| **`claims`**             | <code>{ [key: string]: any; }</code> |                                        |       |
 
 
 #### GetTenantIdResult

@@ -107,14 +107,23 @@ public typealias AuthStateChangedObserver = () -> Void
             completion(nil, error)
             return
         }
-       user.getIdToken(forcingRefresh: forceRefresh, completion: { result, error in
+        
+        user.getIDTokenResult(forcingRefresh: forceRefresh, completion: { result, error in
             if let error = error {
                 CAPLog.print("[", self.plugin.tag, "] ", error)
                 completion(nil, error)
                 return
             }
-            completion(result, nil)
+            completion(result?.token, nil)
         })
+        // return self.getIdTokenResult(forceRefresh, completion: completion: { result, error in
+        //     if let error = error {
+        //         CAPLog.print("[", self.plugin.tag, "] ", error)
+        //         completion(nil, error)
+        //         return
+        //     }
+        //     completion(result?.token, nil)
+        // })
     }
 
     @objc func getIdTokenResult(_ forceRefresh: Bool, completion: @escaping (GetIdTokenResult?, Error?) -> Void) {
@@ -130,9 +139,9 @@ public typealias AuthStateChangedObserver = () -> Void
                 return
             }
 
-            // let result = GetIdTokenResult(token: result.token, expirationTimestamp: result.expirationTimestamp, authTimestamp: result.authTimestamp, issuedAtTimestamp: result.issuedAtTimestamp, signInProvider: result.signInProvider, claims: result.claims);
+//             let result = GetIdTokenResult(token: result.token, expirationTimestamp: result.expirationTimestamp, authTimestamp: result.authTimestamp, issuedAtTimestamp: result.issuedAtTimestamp, signInProvider: result.signInProvider, claims: result.claims);
 
-            let result = GetIdTokenResult(result);
+            let result = GetIdTokenResult(idTokenResult : result.unsafelyUnwrapped);
 
             completion(result, nil)
         })

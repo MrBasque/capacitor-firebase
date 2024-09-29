@@ -167,8 +167,9 @@ public class FirebaseAuthenticationPlugin: CAPPlugin {
                 return
             }
             if let result = result {
-                //call.resolve(result.toJSObject())
-                call.resolve(result.token)
+                var response = JSObject()
+                response["token"] = result
+                call.resolve(response)
             }
         })
     }
